@@ -2,9 +2,9 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "sourceMap": true,
-	"module": "commonjs",
-	"out": "atomic-wrapper.js",
-	"outDir": "../"
+    "module": "commonjs",
+    "out": "atomic-wrapper.js",
+    "outDir": "../"
   },
   "files": [
       "atomic-wrapper.ts"

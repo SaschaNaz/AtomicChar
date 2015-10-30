@@ -1,18 +1,18 @@
-///<reference﻿ path="DefinitelyTyped/atom/atom.d.ts" />
-///<reference﻿ path="declarations/atomic-wrapper-extension.d.ts" />
+///<reference path="DefinitelyTyped/atom/atom.d.ts" />
+///<reference path="declarations/atomic-wrapper-extension.d.ts" />
 
-module AtomicWrapper {
-  var TokenizedLine = require("src/tokenized-line");
-  var DisplayBuffer = require("src/display-buffer");
+namespace AtomicWrapper {
+  let TokenizedLine = require("src/tokenized-line");
+  let DisplayBuffer = require("src/display-buffer");
 
-  var canvas = document.createElement("canvas");
-  var context = canvas.getContext("2d");
-  var font: { fontFamily: string; fontSize: number } = <any>{};
-  var subscriptions: { [key: string]: eventKit.Disposable } = {};
+  let canvas = document.createElement("canvas");
+  let context = canvas.getContext("2d");
+  let font: { fontFamily: string; fontSize: number } = <any>{};
+  let subscriptions: { [key: string]: eventKit.Disposable } = {};
   //context.font = "16px NanumGothicCoding";
 
   /*space, CJK 4e00-, kana 3041-, hangul 1100-*/
-  var breakable = /[\s\u4e00-\u9fff\u3400-\u4dbf\u3041-\u309f\u30a1-\u30ff\u31f0-\u31ff\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/;
+  let breakable = /[\s\u4e00-\u9fff\u3400-\u4dbf\u3041-\u309f\u30a1-\u30ff\u31f0-\u31ff\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/;
 
   function wrap(line: string, width: number): number {
     if (context.measureText(line).width <= width)
@@ -73,17 +73,12 @@ module AtomicWrapper {
       return this.atmcGetSoftWrapWidth();
     }
 
-    DisplayBuffer.prototype.atmcGetEditorWidth = function () {
-      let width = this.width != null ? this.width : this.getScrollWidth();
-      return width - this.getVerticalScrollbarWidth();
-    }
-
     DisplayBuffer.prototype.atmcGetSoftWrapWidth = function () {
       if (this.configSettings.softWrapAtPreferredLineLength) {
-        return Math.min(this.atmcGetEditorWidth(), this.configSettings.preferredLineLength * this.defaultCharWidth);
+        return Math.min(this.getWidth(), this.configSettings.preferredLineLength * this.defaultCharWidth);
       }
       else
-        return this.atmcGetEditorWidth();
+        return this.getWidth();
     }
   }
   export function revert() {
@@ -93,7 +88,6 @@ module AtomicWrapper {
     DisplayBuffer.prototype.getSoftWrapColumn = DisplayBuffer.prototype._nonatomic_getSoftWrapColumn;
     DisplayBuffer.prototype._nonatomic_getSoftWrapColumn = null;
 
-    delete DisplayBuffer.atmcGetEditorWidth;
     delete DisplayBuffer.atmcGetSoftWrapWidth;
   }
 
@@ -113,7 +107,7 @@ module AtomicWrapper {
   }
 
   export function unsubscribeFontEvent() {
-    for (var subscription in subscriptions)
+    for (let subscription in subscriptions)
       (<eventKit.Disposable>subscriptions[subscription]).dispose();
   }
 }

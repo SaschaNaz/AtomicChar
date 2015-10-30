@@ -1,15 +1,17 @@
-///<reference﻿ path="../DefinitelyTyped/atom/atom.d.ts" />
+///<reference path="../DefinitelyTyped/atom/atom.d.ts" />
 
-declare module eventKit {
-  class Disposable {
+declare namespace eventKit {
+  interface Disposable {
     disposed: boolean;
-
-    constructor(disposalAction: any);
     dispose(): void;
+  }
+  interface DisposableConstructor {
+    new (disposalAction: any): Disposable;
+    prototype: Disposable
   }
 }
 
-declare module AtomCore {
+declare namespace AtomCore {
   interface IDisplayBuffer {
     _nonatomic_findWrapColumn: (line: string, softWrapColumn: number) => number;
     isSoftWrapped(): boolean;
