@@ -1,7 +1,7 @@
 {
   "name": "AtomicChar",
   "main": "./lib/atomic-wrapper.js",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Word wrap for non-monospace texts, including Asian ones",
   "repository": "https://github.com/SaschaNaz/AtomicChar",
   "license": "MIT",
