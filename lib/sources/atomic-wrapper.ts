@@ -2,8 +2,10 @@
 ///<reference path="declarations/atomic-wrapper-extension.d.ts" />
 
 namespace AtomicWrapper {
-  let TokenizedLine = require("src/tokenized-line");
-  let DisplayBuffer = require("src/display-buffer");
+  let path = require("path");
+  let sourceDir = path.resolve(".") + "/resources/app.asar/src/";
+  let TokenizedLine = require(sourceDir + "tokenized-line");
+  let DisplayBuffer = require(sourceDir + "display-buffer");
 
   let canvas = document.createElement("canvas");
   let context = canvas.getContext("2d");
@@ -69,9 +71,13 @@ namespace AtomicWrapper {
 
     // This changes the meaning of getSoftWrapColumn; original one gives getEditorWidthInChars
     DisplayBuffer.prototype._nonatomic_getSoftWrapColumn = DisplayBuffer.prototype.getSoftWrapColumn;
-    DisplayBuffer.prototype.getSoftWrapColumn = function () {
+    DisplayBuffer.prototype._nonatomic_getSoftWrapColumnForTokenizedLine = DisplayBuffer.prototype.getSoftWrapColumnForTokenizedLine;
+    DisplayBuffer.prototype.getSoftWrapColumn
+    = DisplayBuffer.prototype.getSoftWrapColumnForTokenizedLine
+    = function() {
       return this.atmcGetSoftWrapWidth();
-    }
+    };
+    
 
     DisplayBuffer.prototype.atmcGetSoftWrapWidth = function () {
       if (this.configSettings.softWrapAtPreferredLineLength) {
@@ -83,10 +89,11 @@ namespace AtomicWrapper {
   }
   export function revert() {
     TokenizedLine.prototype.findWrapColumn = TokenizedLine.prototype._nonatomic_findWrapColumn;
-    TokenizedLine.prototype._nonatomic_findWrapColumn = null;
+    delete TokenizedLine.prototype._nonatomic_findWrapColumn;
 
     DisplayBuffer.prototype.getSoftWrapColumn = DisplayBuffer.prototype._nonatomic_getSoftWrapColumn;
-    DisplayBuffer.prototype._nonatomic_getSoftWrapColumn = null;
+    DisplayBuffer.prototype.getSoftWrapColumnForTokenizedLine = DisplayBuffer.prototype._nonatomic_getSoftWrapColumnForTokenizedLine;
+    delete DisplayBuffer.prototype._nonatomic_getSoftWrapColumn;
 
     delete DisplayBuffer.atmcGetSoftWrapWidth;
   }
