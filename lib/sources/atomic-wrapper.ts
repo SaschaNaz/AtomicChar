@@ -2,8 +2,7 @@
 ///<reference path="declarations/atomic-wrapper-extension.d.ts" />
 
 namespace AtomicWrapper {
-  let path = require("path");
-  let sourceDir = path.resolve(".") + "/resources/app.asar/src/";
+  let sourceDir = atom.packages.resourcePath + "/src/";
   let TokenizedLine = require(sourceDir + "tokenized-line");
   let DisplayBuffer = require(sourceDir + "display-buffer");
 

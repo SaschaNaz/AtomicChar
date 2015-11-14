@@ -27,4 +27,7 @@ declare namespace AtomCore {
     oldValue: any;
     keyPath: string;
   }
+  interface IPackageManager {
+    resourcePath: string;
+  }
 }
